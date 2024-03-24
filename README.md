@@ -28,7 +28,14 @@ Scalar.new("some string")
 A `Variable` represents a named value stored in the `Environment`. Unlike `Scalars`, `Variables` have no value until they are evaluated by an `Environment`. Evaluating a `Variable` that isn't present in the `Environment` will result in a `MissingVariableError`.
 
 ```ruby
-Variable.new("variable_a")
+variable_a = Variable.new("variable_a")
+variable_b = Variable.new("variable_b")
+
+env = Environment.new(
+  "variable_a" => 1
+)
+env.evaluate(variable_a) #=> 1
+env.evaluate(variable_b) #=> MissingVariableError
 ```
 
 ### Expression
@@ -39,13 +46,23 @@ And `Expression` can store its result back into the `Environment` by defining an
 
 ```ruby
 # addition
-Expression.new(:+, Scalar.new(1), Scalar.new(2))
+addition = Expression.new(:+, Scalar.new(1), Scalar.new(2))
 
 # multiplication
-Expression.new(:*, Variable.new("variable_a"), Scalar.new(2))
+multiplication = Expression.new(:*, Variable.new("variable_a"), Scalar.new(2))
 
 # storing output
-Expression.new(:+, Scalar.new(1), Scalar.new(2), output: "one_plus_two")
+storing_output = Expression.new(:+, Scalar.new(1), Scalar.new(2), output: "one_plus_two")
+
+env = Environment.new(
+  "variable_a" => 2
+)
+env.evaluate(addition) #=> 3
+env.evaluate(multiplication) #=> 4
+env.evaluate(storing_output) #=> 3
+
+env.variables
+#=> { "variable_a" => 2, "one_plus_two" => 3 }
 ```
 
 #### Special `operators`
@@ -111,7 +128,7 @@ json_string = <<~JSON
     "name": "score_a"
   }
 JSON
-Expressive.from_json(json_string)
+variable_score_a = Expressive.from_json(json_string)
 #=> <Variable...>
 ```
 

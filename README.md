@@ -14,6 +14,9 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
+> [!IMPORTANT]
+> When using the gem, all references to the models below must be prefixed with `Expressive::`. This is omitted in the README for simplicity.
+
 ### Scalar
 
 A `Scalar` is the simplest object that can be evaluated. It holds a single `value`. When used in an `Expression`, this `value` must respond to the symbol (i.e. support the method) defined by the `Expression#operator`.
@@ -129,7 +132,7 @@ json_string = <<~JSON
   }
 JSON
 variable_score_a = Expressive.from_json(json_string)
-#=> <Variable...>
+Environment.new("score_a" => 100).evaluate(variable_score_a) #=> 100
 ```
 
 ### Beyond math

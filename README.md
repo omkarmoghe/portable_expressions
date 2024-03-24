@@ -50,7 +50,7 @@ Expression.new(:+, Scalar.new(1), Scalar.new(2), output: "one_plus_two")
 
 #### Special `operators`
 
-Some operators, like logical `&&` and `||` are not methods in Ruby, so we pass a special string that Expressive understands.
+Some operators, like logical `&&` and `||` are not methods in Ruby, so we pass a special string/symbol that Expressive understands.
 - `&&` is represented by `:and`
 - `||` is represented by `:or`
 
@@ -66,6 +66,8 @@ environment = Environment.new(
 
 environment.evaluate(Variable.new("variable_a"))
 #=> 1
+environment.evaluate(Variable.new("variable_c"))
+#=> MissingVariableError "Environment missing variable variable_c."
 
 environment.evaluate(
   Expression.new(

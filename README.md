@@ -1,16 +1,16 @@
 # Expressive
 
-A simple and flexible Ruby library to build and evaluate mathematical or other expressions.
+A simple and flexible pure Ruby library for building and evaluating expressions.
 
 ## Installation
 
 Install the gem and add to the application's Gemfile by executing:
 
-    $ bundle add expressive
+  `bundle add expressive`
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
-    $ gem install expressive
+  `gem install expressive`
 
 ## Usage
 
@@ -48,6 +48,12 @@ Expression.new(:*, Variable.new("variable_a"), Scalar.new(2))
 Expression.new(:+, Scalar.new(1), Scalar.new(2), output: "one_plus_two")
 ```
 
+#### Special `operators`
+
+Some operators, like logical `&&` and `||` are not methods in Ruby, so we pass a special string that Expressive understands.
+- `&&` is represented by `:and`
+- `||` is represented by `:or`
+
 ### Environment
 
 The `Environment` holds state in the form of a `variables` hash and can evaluate `Expressions`, `Scalars`, and `Variables` within a context. The environment handles updates to the state as `Expressions` run.
@@ -75,7 +81,7 @@ environment.variables
 #=> { "variable_a" => 1, "variable_b" => 2, "variable_c" => 3 }
 ```
 
-When evaluating multiple objects at a time, the value of the _last_ object will be returned.
+When evaluating multiple objects at a time, the value of the **last** object will be returned.
 
 ```ruby
 environment = Environment.new
@@ -88,17 +94,50 @@ environment.evaluate(
 
 ### Serialization (to JSON)
 
-All models support serialization via:
-- `as_json`: builds a serializable hash representation of the object
-- `to_json`: builds a JSON string representing the object
+All models including the `Environment` support serialization via:
+- `as_json`: builds a serializable `Hash` representation of the object
+- `to_json`: builds a JSON `String` representing the object
 
 ### Building (from JSON)
 
-<!-- TODO -->
+To parse a JSON string, use the `Expressive.from_json` method.
+
+```ruby
+json_string = <<~JSON
+  {
+    "object": "Expressive::Variable",
+    "name": "score_a"
+  }
+JSON
+Expressive.from_json(json_string)
+#=> <Variable...>
+```
 
 ### Beyond math
 
-<!-- TODO -->
+`Scalars` and `Variables` can hold any type of value that's JSON serializable. This allows for more complex use cases such as:
+
+#### Logical statements
+
+```ruby
+# variable_a > variable_b && variable_c
+a_greater_than_b = Expression.new(
+  :>,
+  Variable.new("variable_a"),
+  Variable.new("variable_b"),
+)
+conditional = Expression.new(
+  :and,
+  a_greater_than_b,
+  Variable.new("variable_c"),
+)
+Environment.new(
+  "variable_a" => 2,
+  "variable_b" => 1,
+  "variable_c" => "truthy",
+).evaluate(conditional)
+#=> true
+```
 
 ## Development
 

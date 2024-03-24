@@ -32,8 +32,8 @@ module Expressive
           raise MissingVariableError, "Environment missing variable #{key}."
         end
       when Expression
-        value = object.operands.map { |operand| evaluate(operand) }
-                              .reduce(object.operator)
+        value = object.operands.map { |operand| Evaluator.new(evaluate(operand)) }
+                               .reduce(object.operator)
 
         if object.output
           variables[object.output] = value

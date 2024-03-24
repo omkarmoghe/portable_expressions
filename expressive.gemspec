@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors = ["Omkar Moghe"]
   spec.email = ["theomkarmoghe@gmail.com"]
 
-  spec.summary = "A simple and flexible Ruby library to build and evaluate mathematical or other expressions."
+  spec.summary = "A simple and flexible pure Ruby library for building and evaluating expressions."
   spec.homepage = "https://github.com/omkarmoghe/expressive"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"

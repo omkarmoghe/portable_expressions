@@ -3,8 +3,7 @@ class TestParser < Minitest::Test
     json = <<~JSON
       {
         "object": "Expressive::Variable",
-        "name": "score_a",
-        "value": 0.5
+        "name": "score_a"
       }
     JSON
 
@@ -34,13 +33,11 @@ class TestParser < Minitest::Test
         "operands": [
           {
             "object": "Expressive::Variable",
-            "name": "rating_b",
-            "value": 1200
+            "name": "rating_b"
           },
           {
             "object": "Expressive::Variable",
-            "name": "rating_a",
-            "value": 1000
+            "name": "rating_a"
           }
         ]
       }

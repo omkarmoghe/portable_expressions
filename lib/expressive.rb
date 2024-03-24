@@ -2,6 +2,7 @@
 
 require_relative "expressive/version"
 require_relative "expressive/modules/serializable"
+require_relative "expressive/evaluator"
 require_relative "expressive/scalar"
 require_relative "expressive/variable"
 require_relative "expressive/expression"

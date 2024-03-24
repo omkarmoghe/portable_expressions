@@ -14,17 +14,16 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-### Models
-
-#### Scalar
+### Scalar
 
 A `Scalar` is the simplest object that can be evaluated. It holds a single `value`. When used in an `Expression`, this `value` must respond to the symbol (i.e. support the method) defined by the `Expression#operator`.
 
 ```ruby
 Scalar.new(1)
+Scalar.new("some string")
 ```
 
-#### Variable
+### Variable
 
 A `Variable` represents a named value stored in the `Environment`. Unlike `Scalars`, `Variables` have no value until they are evaluated by an `Environment`. Evaluating a `Variable` that isn't present in the `Environment` will result in a `MissingVariableError`.
 
@@ -32,9 +31,9 @@ A `Variable` represents a named value stored in the `Environment`. Unlike `Scala
 Variable.new("variable_a")
 ```
 
-#### Expression
+### Expression
 
-An expression represents 2 or more `operands` that are reduced using a defined `operator`. The `operands` of an `Expression` can be `Scalars`, `Variables`, or other `Expressions`. All `operands` must `respond_to?` the method defined by the `operator`.
+An expression represents 2 or more `operands` that are reduced using a defined `operator`. The `operands` of an `Expression` can be `Scalars`, `Variables`, or other `Expressions`. All `operands` must respond to the symbol (i.e. support the method) defined by the `Expression#operator`.
 
 And `Expression` can store its result back into the `Environment` by defining an `output`.
 
@@ -49,7 +48,7 @@ Expression.new(:*, Variable.new("variable_a"), Scalar.new(2))
 Expression.new(:+, Scalar.new(1), Scalar.new(2), output: "one_plus_two")
 ```
 
-#### Environment
+### Environment
 
 The `Environment` holds state in the form of a `variables` hash and can evaluate `Expressions`, `Scalars`, and `Variables` within a context. The environment handles updates to the state as `Expressions` run.
 

@@ -1,4 +1,9 @@
+# frozen_string_literal: true
+
 module Expressive
+  # An expression represents 2 or more `operands` that are reduced using a defined `operator`. The `operands` of an
+  # `Expression` can be `Scalars`, `Variables`, or other `Expressions`. All `operands` must respond to the symbol (i.e.
+  # support the method) defined by the `Expression#operator`.
   class Expression
     include Serializable
 
@@ -8,7 +13,8 @@ module Expressive
       Variable
     ].freeze
 
-    attr_reader :operator, :operands, :output
+    attr_reader :operator, :operands
+    attr_accessor :output # Sometimes you may want to conditionally set an `output` after initialization.
 
     # @param operator [String, Symbol] Mathematical operator to `reduce` the `operands` array with.
     # @param *operands [Variable, Expressions] 2 or more Variables, Scalars, or Expressions
@@ -21,8 +27,9 @@ module Expressive
       validate!
     end
 
+    # TODO(@omkarmoghe): This string representation might not make the most sense for non-math expressions.
     def to_s
-      "(#{operands.join(" #{operator.to_s} ")})"
+      "(#{operands.join(" #{operator} ")})"
     end
 
     def as_json

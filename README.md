@@ -34,7 +34,7 @@ A `Variable` represents a named value stored in the `Environment`. Unlike `Scala
 variable_a = Variable.new("variable_a")
 variable_b = Variable.new("variable_b")
 
-env = Environment.new(
+environment = Environment.new(
   "variable_a" => 1
 )
 env.evaluate(variable_a) #=> 1
@@ -57,7 +57,7 @@ multiplication = Expression.new(:*, Variable.new("variable_a"), Scalar.new(2))
 # storing output
 storing_output = Expression.new(:+, Scalar.new(1), Scalar.new(2), output: "one_plus_two")
 
-env = Environment.new(
+environment = Environment.new(
   "variable_a" => 2
 )
 env.evaluate(addition) #=> 3
@@ -114,6 +114,18 @@ environment.evaluate(
 #=> 3
 ```
 
+You can update or modify the `variables` hash directly at any time.
+
+```ruby
+environment = Environment.new(
+  "variable_a" => 1
+)
+
+environment.evaluate(Variable.new("variable_a")) # => 1
+environment.variables["variable_a"] = 2
+environment.evaluate(Variable.new("variable_a")) # => 2
+```
+
 ### Serialization (to JSON)
 
 All models including the `Environment` support serialization via:
@@ -125,14 +137,24 @@ All models including the `Environment` support serialization via:
 To parse a JSON string, use the `Expressive.from_json` method.
 
 ```ruby
-json_string = <<~JSON
+environment_json = <<~JSON
+  {
+    "object": "Expressive::Environment",
+    "variables": {
+      "score_a": 100
+    }
+  }
+JSON
+variable_json = <<~JSON
   {
     "object": "Expressive::Variable",
     "name": "score_a"
   }
 JSON
-variable_score_a = Expressive.from_json(json_string)
-Environment.new("score_a" => 100).evaluate(variable_score_a) #=> 100
+
+environment = Expressive.from_json(environment_json)
+variable_score_a = Expressive.from_json(variable_json)
+environment.evaluate(variable_score_a) #=> 100
 ```
 
 ### Beyond math

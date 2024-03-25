@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Ruby lib
+require "delegate"
+require "json"
+
 require_relative "expressive/version"
 require_relative "expressive/modules/serializable"
 require_relative "expressive/evaluator"

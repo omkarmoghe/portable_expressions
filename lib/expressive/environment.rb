@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
 module Expressive
+  # The `Environment` holds state in the form of a `variables` hash and can evaluate `Expressions`, `Scalars`, and
+  # `Variables` within a context.
   class Environment
     include Serializable
 
@@ -32,12 +36,11 @@ module Expressive
           raise MissingVariableError, "Environment missing variable #{key}."
         end
       when Expression
-        value = object.operands.map { |operand| Evaluator.new(evaluate(operand)) }
-                               .reduce(object.operator)
+        value = object.operands
+                      .map { |operand| Evaluator.new(evaluate(operand)) }
+                      .reduce(object.operator)
 
-        if object.output
-          variables[object.output] = value
-        end
+        variables[object.output] = value if object.output
 
         value
       end

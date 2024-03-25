@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name = "expressive"
   spec.version = Expressive::VERSION
   spec.authors = ["Omkar Moghe"]
-  spec.email = ["theomkarmoghe@gmail.com"]
+  spec.email = ["yo@omkr.dev"]
 
   spec.summary = "A simple and flexible pure Ruby library for building and evaluating expressions."
   spec.homepage = "https://github.com/omkarmoghe/expressive"

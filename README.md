@@ -37,8 +37,8 @@ variable_b = Variable.new("variable_b")
 environment = Environment.new(
   "variable_a" => 1
 )
-env.evaluate(variable_a) #=> 1
-env.evaluate(variable_b) #=> MissingVariableError
+environment.evaluate(variable_a) #=> 1
+environment.evaluate(variable_b) #=> MissingVariableError
 ```
 
 ### Expression
@@ -60,11 +60,11 @@ storing_output = Expression.new(:+, Scalar.new(1), Scalar.new(2), output: "one_p
 environment = Environment.new(
   "variable_a" => 2
 )
-env.evaluate(addition) #=> 3
-env.evaluate(multiplication) #=> 4
-env.evaluate(storing_output) #=> 3
+environment.evaluate(addition) #=> 3
+environment.evaluate(multiplication) #=> 4
+environment.evaluate(storing_output) #=> 3
 
-env.variables
+environment.variables
 #=> { "variable_a" => 2, "one_plus_two" => 3 }
 ```
 
@@ -181,6 +181,20 @@ Environment.new(
   "variable_c" => "truthy",
 ).evaluate(conditional)
 #=> true
+```
+
+#### String manipulation
+
+```ruby
+# Define a reusable `Expression` using `Variables`.
+repeat_count = Variable.new("repeat")
+string_to_repeat = Variable.new("user_input")
+repeater = Expression.new(:*, string_to_repeat, repeat_count)
+
+# E.g. inputs via an `ActionController` (Ruby on Rails)
+# GET /repeater?repeat=3&user_input=cool
+environment = Environment.new(**params)
+environment.evaluate(repeater) #=> "coolcoolcool"
 ```
 
 ## Development

@@ -132,6 +132,8 @@ All models including the `Environment` support serialization via:
 - `as_json`: builds a serializable `Hash` representation of the object
 - `to_json`: builds a JSON `String` representing the object
 
+All models have a **required** `object` key that indicates the type of object.
+
 ### Building (from JSON)
 
 To parse a JSON string, use the `Expressive.from_json` method.

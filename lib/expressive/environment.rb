@@ -27,7 +27,7 @@ module Expressive
 
     private
 
-    def evaluate_one(object)
+    def evaluate_one(object) # rubocop:disable Metrics/MethodLength
       case object
       when Scalar
         object.value

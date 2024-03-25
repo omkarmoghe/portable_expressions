@@ -1,4 +1,4 @@
-# Expressive
+# Expressive 🧠
 
 A simple and flexible pure Ruby library for building and evaluating expressions.
 
@@ -159,7 +159,7 @@ environment.evaluate(variable_score_a) #=> 100
 
 ### Beyond math
 
-`Scalars` and `Variables` can hold any type of value that's JSON serializable. This allows for more complex use cases such as:
+The examples throughout the README show simple arithmetic to illustrate the mechanics of the library. However, `Scalars` and `Variables` can hold any type of value that's JSON serializable, which allows for more complex use cases such as:
 
 #### Logical statements
 

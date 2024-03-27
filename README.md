@@ -267,10 +267,10 @@ Then, some consumer with access to the user's permissions and context around the
 
 ```ruby
 environment = Environment.new(
-  "user_permissions" => user.permissions #=> ["blog.read", "blog.write", "comment.read", "comment.write"]
-  "resource" => some_model.resource_name #=> "comment"
-  "action" => "read"
-  "resource_owner" => some_model.user_id
+  "user_permissions" => user.permissions, #=> ["blog.read", "blog.write", "comment.read", "comment.write"]
+  "resource" => some_model.resource_name, #=> "comment"
+  "action" => "read",
+  "resource_owner" => some_model.user_id,
   "user_id" => user.id
 )
 
@@ -281,12 +281,12 @@ user_owns_resource_and_has_permission = PortableExpressions.from_json(
 environment.evaluate(user_owns_resource_and_has_permission) #=> true
 
 # Individual policies
-user_has_permission = PortableExpressions.from_json(File.read("user_has_permission.json"))
-user_owns_resource = PortableExpressions.from_json(File.read("user_owns_resource.json"))
-user_owns_resource_and_has_permission = PortableExpressions.from_json(
-  File.read("user_owns_resource_and_has_permission.json")
-)
-environment.evaluate(user_has_permission, user_owns_resource, user_owns_resource_and_has_permission) #=> true
+user_owns_resource_and_has_permission = [
+  PortableExpressions.from_json(File.read("user_has_permission.json")),
+  PortableExpressions.from_json(File.read("user_owns_resource.json")),
+  PortableExpressions.from_json(File.read("user_owns_resource_and_has_permission.json"))
+]
+environment.evaluate(*user_owns_resource_and_has_permission) #=> true
 ```
 
 ## Development

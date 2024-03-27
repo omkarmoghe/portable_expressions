@@ -253,15 +253,16 @@ File.write("user_owns_resource.json", user_owns_resource.to_json)
 File.write("user_owns_resource_and_has_permission.json", user_owns_resource_and_has_permission.to_json)
 ```
 
-These examples demonstrate portability via JSON files, but we can just as easily serve the policy directly to anyone who needs it via some HTTP controller:
-
-```ruby
-# E.g. Rails via an `ActionController`
-render json: user_owns_resource_and_has_permission.as_json, :ok
-
-# Elsewhere, in the requesting service
-user_owns_resource_and_has_permission = PortableExpressions.from_json(response.body.to_s)
-```
+> [!TIP]
+> These examples demonstrate portability via JSON files, but we can just as easily serve the policy directly to anyone who needs it via some HTTP controller:
+>
+>  ```ruby
+>  # E.g. Rails via an `ActionController`
+>  render json: user_owns_resource_and_has_permission.as_json, :ok
+>
+>  # Elsewhere, in the requesting service
+>  user_owns_resource_and_has_permission = PortableExpressions.from_json(response.body.to_s)
+>  ```
 
 Then, some consumer with access to the user's permissions and context around the requested `resource` and `action` can execute the policy.
 

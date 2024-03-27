@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Expressive
+module PortableExpressions
   # Used to wrap `operands` when evaluating an `Expression`. This allows us to "extend" the functionality of an object
   # without polluting the app wide definition.
   class Evaluator < SimpleDelegator

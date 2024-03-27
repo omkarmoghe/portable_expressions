@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Expressive
+module PortableExpressions
   # A `Scalar` is the simplest object that can be evaluated. It holds a single `value`. When used in an `Expression`,
   # this `value` must respond to the symbol (i.e. support the method) defined by the `Expression#operator`.
   class Scalar

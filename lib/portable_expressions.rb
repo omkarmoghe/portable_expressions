@@ -4,15 +4,15 @@
 require "delegate"
 require "json"
 
-require_relative "expressive/version"
-require_relative "expressive/modules/serializable"
-require_relative "expressive/evaluator"
-require_relative "expressive/scalar"
-require_relative "expressive/variable"
-require_relative "expressive/expression"
-require_relative "expressive/environment"
+require_relative "portable_expressions/version"
+require_relative "portable_expressions/modules/serializable"
+require_relative "portable_expressions/evaluator"
+require_relative "portable_expressions/scalar"
+require_relative "portable_expressions/variable"
+require_relative "portable_expressions/expression"
+require_relative "portable_expressions/environment"
 
-module Expressive
+module PortableExpressions
   Error = Class.new(StandardError)
 
   DeserializationError = Class.new(Error)

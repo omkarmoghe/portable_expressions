@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    expressive (0.1.0)
+    portable_expressions (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -40,7 +40,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  expressive!
+  portable_expressions!
   minitest (~> 5.16)
   rake (~> 13.0)
   rubocop (~> 1.21)

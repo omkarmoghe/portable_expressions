@@ -2,8 +2,8 @@
 
 require "test_helper"
 
-class TestExpressive < Minitest::Test
+class TestPortableExpressions < Minitest::Test
   def test_that_it_has_a_version_number
-    refute_nil ::Expressive::VERSION
+    refute_nil ::PortableExpressions::VERSION
   end
 end

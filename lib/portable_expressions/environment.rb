@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Expressive
+module PortableExpressions
   # The `Environment` holds state in the form of a `variables` hash and can evaluate `Expressions`, `Scalars`, and
   # `Variables` within a context.
   class Environment

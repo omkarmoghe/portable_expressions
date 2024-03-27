@@ -1,21 +1,21 @@
-# Expressive 🧠
+# PortableExpressions 🍱
 
-A simple and flexible pure Ruby library for building and evaluating expressions.
+A simple and flexible pure Ruby library for building and evaluating expressions. Expressions can be serialized to and built from JSON strings for portability.
 
 ## Installation
 
 Install the gem and add to the application's Gemfile by executing:
 
-  `bundle add expressive`
+  `bundle add portable_expressions`
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
-  `gem install expressive`
+  `gem install portable_expressions`
 
 ## Usage
 
 > [!IMPORTANT]
-> When using the gem, all references to the models below must be prefixed with `Expressive::`. This is omitted in the README for simplicity.
+> When using the gem, all references to the models below must be prefixed with `PortableExpressions::`. This is omitted in the README for simplicity.
 
 ### Scalar
 
@@ -43,9 +43,15 @@ environment.evaluate(variable_b) #=> MissingVariableError
 
 ### Expression
 
-An expression represents 2 or more `operands` that are reduced using a defined `operator`. The `operands` of an `Expression` can be `Scalars`, `Variables`, or other `Expressions`. All `operands` must respond to the symbol (i.e. support the method) defined by the `Expression#operator`.
+An expression represents 2 or more `operands` that are reduced using a defined `operator`. The `operands` of an `Expression` can be `Scalars`, `Variables`, or other `Expressions`. All `operands` must respond to the symbol (i.e. support the method) defined by the `Expression#operator`. Just like `Variables`, `Expressions` have non value until they're evaluated by an `Environment`.
 
-And `Expression` can store its result back into the `Environment` by defining an `output`.
+Evaluating an `Expression` does the following:
+1. all `operands` are first evaluated in order
+1. all resulting _values_ are reduced using the symbol defined by the `operator`
+
+In this way evaluation is "lazy"; it won't evaluate a `Variable` or `Expression` until the `operand` is about to be used.
+
+An `Expression` can store its result back into the `Environment` by defining an `output`.
 
 ```ruby
 # addition
@@ -70,7 +76,7 @@ environment.variables
 
 #### Special `operators`
 
-Some operators, like logical `&&` and `||` are not methods in Ruby, so we pass a special string/symbol that Expressive understands.
+Some operators, like logical `&&` and `||` are not methods in Ruby, so we pass a special string/symbol that PortableExpressions understands.
 - `&&` is represented by `:and`
 - `||` is represented by `:or`
 
@@ -136,12 +142,12 @@ All models have a **required** `object` key that indicates the type of object.
 
 ### Building (from JSON)
 
-To parse a JSON string, use the `Expressive.from_json` method.
+To parse a JSON string, use the `PortableExpressions.from_json` method.
 
 ```ruby
 environment_json = <<~JSON
   {
-    "object": "Expressive::Environment",
+    "object": "PortableExpressions::Environment",
     "variables": {
       "score_a": 100
     }
@@ -149,13 +155,13 @@ environment_json = <<~JSON
 JSON
 variable_json = <<~JSON
   {
-    "object": "Expressive::Variable",
+    "object": "PortableExpressions::Variable",
     "name": "score_a"
   }
 JSON
 
-environment = Expressive.from_json(environment_json)
-variable_score_a = Expressive.from_json(variable_json)
+environment = PortableExpressions.from_json(environment_json)
+variable_score_a = PortableExpressions.from_json(variable_json)
 environment.evaluate(variable_score_a) #=> 100
 ```
 
@@ -207,7 +213,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/omkarmoghe/expressive.
+Bug reports and pull requests are welcome on GitHub at https://github.com/omkarmoghe/portable_expressions.
 
 ## License
 

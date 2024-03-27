@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-module Expressive
+module PortableExpressions
   VERSION = "0.1.0"
 end

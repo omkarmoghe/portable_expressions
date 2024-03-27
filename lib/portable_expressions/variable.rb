@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Expressive
+module PortableExpressions
   # A `Variable` represents a named value stored in the `Environment`. Unlike `Scalars`, `Variables` have no value
   # until they are evaluated by an `Environment`. Evaluating a `Variable` that isn't present in the `Environment` will
   # result in a `MissingVariableError`.

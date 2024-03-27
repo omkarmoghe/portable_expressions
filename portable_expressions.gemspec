@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
-require_relative "lib/expressive/version"
+require_relative "lib/portable_expressions/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "expressive"
-  spec.version = Expressive::VERSION
+  spec.name = "portable_expressions"
+  spec.version = PortableExpressions::VERSION
   spec.authors = ["Omkar Moghe"]
   spec.email = ["yo@omkr.dev"]
 
   spec.summary = "A simple and flexible pure Ruby library for building and evaluating expressions."
-  spec.homepage = "https://github.com/omkarmoghe/expressive"
+  spec.homepage = "https://github.com/omkarmoghe/portable_expressions"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
-  spec.metadata["changelog_uri"] = "https://github.com/omkarmoghe/Expressive/blob/main/CHANGELOG.md"
+  spec.metadata["changelog_uri"] = "https://github.com/omkarmoghe/portable_expressions/blob/main/CHANGELOG.md"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.

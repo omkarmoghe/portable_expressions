@@ -202,10 +202,91 @@ repeat_count = Variable.new("repeat")
 string_to_repeat = Variable.new("user_input")
 repeater = Expression.new(:*, string_to_repeat, repeat_count)
 
-# E.g. inputs via an `ActionController` (Ruby on Rails)
+# Get inputs from some HTTP controller (e.g. Rails)
+
 # GET /repeater?repeat=3&user_input=cool
-environment = Environment.new(**params)
-environment.evaluate(repeater) #=> "coolcoolcool"
+Environment.new(**params).evaluate(repeater) #=> "coolcoolcool"
+# GET /repeater?repeat=3&user_input=alright
+Environment.new(**params).evaluate(repeater) #=> "alrightalrightalright"
+```
+
+#### Authorization policies
+
+First, we define a portable and reusable policies.
+
+```ruby
+# This is a composable policy that checks if a user has permissions for a requested resource and action.
+user_permissions = Variable.new("user_permissions")
+resource = Variable.new("resource")
+action = Variable.new("action")
+requested_permission = Expression.new(:+, resource, Scalar.new("."), action)
+user_has_permission = Expression.new(:include?, user_permissions, requested_permission, output: "user_has_permission")
+
+# Another composable policy that checks if the resource belongs to a user.
+resource_owner = Variable.new("resource_owner")
+user_id = Variable.new("user_id")
+user_owns_resource = Expression.new(:==, resource_owner, user_id, output: "user_owns_resource")
+```
+
+We might decide to combine the policies into a single one:
+
+```ruby
+user_owns_resource_and_has_permission = Expression.new(:and, user_owns_resource, user_has_permission)
+
+# Write to a JSON file
+File.write("user_owns_resource_and_has_permission.json", user_owns_resource_and_has_permission.to_json)
+```
+
+Or we might define a policy the relies on the `output` of other policies. This means that the `Environment` must run the dependencies first in order for their `output` to be available in the `Environment#variables`.
+
+```ruby
+user_owns_resource_and_has_permission = Expression.new(
+  :and,
+  Variable.new("user_owns_resource"),
+  Variable.new("user_has_permission")
+)
+
+# Each of these can be individually run
+File.write("user_has_permission.json", user_has_permission.to_json)
+File.write("user_owns_resource.json", user_owns_resource.to_json)
+# This one relies on the previous 2 being run, or the corresponding variables being set in the `Environment`.
+File.write("user_owns_resource_and_has_permission.json", user_owns_resource_and_has_permission.to_json)
+```
+
+These examples demonstrate portability via JSON files, but we can just as easily serve the policy directly to anyone who needs it via some HTTP controller:
+
+```ruby
+# E.g. Rails via an `ActionController`
+render json: user_owns_resource_and_has_permission.as_json, :ok
+
+# Elsewhere, in the requesting service
+user_owns_resource_and_has_permission = PortableExpressions.from_json(response.body.to_s)
+```
+
+Then, some consumer with access to the user's permissions and context around the requested `resource` and `action` can execute the policy.
+
+```ruby
+environment = Environment.new(
+  "user_permissions" => user.permissions #=> ["blog.read", "blog.write", "comment.read", "comment.write"]
+  "resource" => some_model.resource_name #=> "comment"
+  "action" => "read"
+  "resource_owner" => some_model.user_id
+  "user_id" => user.id
+)
+
+# Combined policy
+user_owns_resource_and_has_permission = PortableExpressions.from_json(
+  File.read("user_owns_resource_and_has_permission.json")
+)
+environment.evaluate(user_owns_resource_and_has_permission) #=> true
+
+# Individual policies
+user_has_permission = PortableExpressions.from_json(File.read("user_has_permission.json"))
+user_owns_resource = PortableExpressions.from_json(File.read("user_owns_resource.json"))
+user_owns_resource_and_has_permission = PortableExpressions.from_json(
+  File.read("user_owns_resource_and_has_permission.json")
+)
+environment.evaluate(user_has_permission, user_owns_resource, user_owns_resource_and_has_permission) #=> true
 ```
 
 ## Development

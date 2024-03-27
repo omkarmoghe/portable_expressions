@@ -169,7 +169,7 @@ variable_score_a = PortableExpressions.from_json(variable_json)
 environment.evaluate(variable_score_a) #=> 100
 ```
 
-### Beyond math
+### Example use cases
 
 The examples throughout the README show simple arithmetic to illustrate the mechanics of the library. However, `Scalars` and `Variables` can hold any type of value that's JSON serializable, which allows for more complex use cases such as:
 

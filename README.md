@@ -191,6 +191,9 @@ Environment.new(
 #=> true
 ```
 
+> [!TIP]
+> Some operators have special symbols, see [special operators](#special-operators) for more details.
+
 #### String manipulation
 
 ```ruby

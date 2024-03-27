@@ -21,11 +21,13 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ### Scalar
 
-A `Scalar` is the simplest object that can be evaluated. It holds a single `value`. When used in an `Expression`, this `value` must respond to the symbol (i.e. support the method) defined by the `Expression#operator`.
+A `Scalar` is the simplest object that can be evaluated. It holds a single `value`. When used in an `Expression`, this `value` must respond to the symbol (i.e. support the method) defined by the `Expression#operator`. The `value` must also be serializable to JSON; `Array` and `Hash` are allowed types as long as their elements are all serializable as well.
 
 ```ruby
 Scalar.new(1)
 Scalar.new("some string")
+Scalar.new([1.2, 3.4, 5.6])
+Scalar.new({ "foo" => "bar" })
 ```
 
 ### Variable

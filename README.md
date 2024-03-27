@@ -1,5 +1,7 @@
 # PortableExpressions 🍱
 
+![Gem Version](https://img.shields.io/gem/v/portable_expressions) ![Gem Total Downloads](https://img.shields.io/gem/dt/portable_expressions)
+
 A simple and flexible pure Ruby library for building and evaluating expressions. Expressions can be serialized to and built from JSON strings for portability.
 
 ## Installation

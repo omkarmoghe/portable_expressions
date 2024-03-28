@@ -141,7 +141,7 @@ environment.evaluate(Variable.new("variable_a")) # => 2
 ```
 
 > [!CAUTION]
-> Be careful when using `symbols` as variable names. While this works in Ruby, any `symbol` keys or names are converted to `strings` when the `Environment` or `Variable` are serialized to JSON.
+> Ruby `symbols` are converted to `strings` when serialized to JSON, and remain `strings` when that JSON is parsed.
 >
 > ```ruby
 > environment = Environment.new(foo: "bar")
@@ -151,6 +151,7 @@ environment.evaluate(Variable.new("variable_a")) # => 2
 >
 > variable_foo = PortableExpressions.from_json(variable_foo.to_json)
 > environment.evaluate(variable_foo) #=> MissingVariableError
+> ```
 
 ### Serialization (to JSON)
 
@@ -276,13 +277,13 @@ File.write("user_owns_resource_and_has_permission.json", user_owns_resource_and_
 > [!TIP]
 > These examples demonstrate portability via JSON files, but we can just as easily serve the policy directly to anyone who needs it via some HTTP controller:
 >
->  ```ruby
->  # E.g. Rails via an `ActionController`
->  render json: user_owns_resource_and_has_permission.as_json, :ok
+> ```ruby
+> # E.g. Rails via an `ActionController`
+> render json: user_owns_resource_and_has_permission.as_json, :ok
 >
->  # Elsewhere, in the requesting service
->  user_owns_resource_and_has_permission = PortableExpressions.from_json(response.body.to_s)
->  ```
+> # Elsewhere, in the requesting service
+> user_owns_resource_and_has_permission = PortableExpressions.from_json(response.body.to_s)
+> ```
 
 Then, some consumer with access to the user's permissions and context around the requested `resource` and `action` can execute the policy.
 

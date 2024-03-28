@@ -84,7 +84,7 @@ environment.evaluate(storing_output) #=> 3
 environment.variables #=> { "one_plus_two" => 3 }
 ```
 
-Storing output allows us to write composable `Expressions` instead of having to nest `Expressions` when they rely on each other's result. This allows us to do things like parallelize parts of our procedure. For example, consider a set of `Expressions` for solving the gravitational force formula:
+Storing output allows us to write composable `Expressions` that build on each other instead of having to nest them. This allows us to do things like parallelize expensive parts of our procedure. For example, consider a set of `Expressions` for solving the gravitational force formula:
 
 $$F_g = \frac{G \cdot m_1 \cdot m_2}{r^2}$$
 
@@ -96,13 +96,13 @@ denominator = Expression.new(:**, Variable.new("distance"), 2, output: "denomina
 grav_force = Expression.new(:/, Variable.new("numerator"), Variable.new("denominator"))
 ```
 
-At this point, we can compute the numerator and denominator independently.
+At this point, we can compute the numerator and denominator independently, in any order.
 
 ```ruby
 environment = Environment.new(
-  "mass1" => 123.45
-  "mass1" => 54.321
-  "distance" => 67.89
+  "mass1" => 123.45,
+  "mass1" => 54.321,
+  "distance" => 67.89,
 )
 
 # In parallel...

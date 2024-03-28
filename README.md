@@ -15,14 +15,13 @@ If bundler is not being used to manage dependencies, install the gem by executin
   `gem install portable_expressions`
 
 ## Why would I need this?
-<!-- TODO -->
 
 See our [example use cases](#example-use-cases) for more ideas.
 
 ## Usage
 
 > [!IMPORTANT]
-> When using the gem, all references to the models below must be prefixed with `PortableExpressions::`. This is omitted in the README for simplicity.
+> When using the gem, all references to the models below must be prefixed with `PortableExpressions::` when used in your project. This is omitted in the README for simplicity.
 
 ### Scalar
 
@@ -141,6 +140,18 @@ environment.variables["variable_a"] = 2
 environment.evaluate(Variable.new("variable_a")) # => 2
 ```
 
+> [!CAUTION]
+> Be careful when using `symbols` as variable names. While this works in Ruby, any `symbol` keys or names are converted to `strings` when the `Environment` or `Variable` are serialized to JSON.
+>
+> ```ruby
+> environment = Environment.new(foo: "bar")
+>
+> variable_foo = Variable.new(:foo)
+> environment.evaluate(variable_foo) #=> "bar"
+>
+> variable_foo = PortableExpressions.from_json(variable_foo.to_json)
+> environment.evaluate(variable_foo) #=> MissingVariableError
+
 ### Serialization (to JSON)
 
 All models including the `Environment` support serialization via:
@@ -187,7 +198,7 @@ a_greater_than_b = Expression.new(
   Variable.new("variable_a"),
   Variable.new("variable_b"),
 )
-conditional = Expression.new(
+condition = Expression.new(
   :and,
   a_greater_than_b,
   Variable.new("variable_c"),
@@ -196,7 +207,7 @@ Environment.new(
   "variable_a" => 2,
   "variable_b" => 1,
   "variable_c" => "truthy",
-).evaluate(conditional)
+).evaluate(condition)
 #=> true
 ```
 

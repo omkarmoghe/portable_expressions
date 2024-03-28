@@ -20,9 +20,7 @@ module PortableExpressions
     end
 
     def as_json
-      super.merge(
-        variables: variables
-      )
+      super.merge(variables: variables)
     end
 
     private

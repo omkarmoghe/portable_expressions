@@ -16,6 +16,8 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Why would I need this?
 
+<!-- TODO -->
+
 See our [example use cases](#example-use-cases) for more ideas.
 
 ## Usage

@@ -59,8 +59,6 @@ Evaluating an `Expression` does the following:
 
 In this way evaluation is "lazy"; it won't evaluate a `Variable` or `Expression` until the `operand` is about to be used.
 
-An `Expression` can store its result back into the `Environment` by defining an `output`.
-
 ```ruby
 # addition
 addition = Expression.new(:+, Scalar.new(1), Scalar.new(2))
@@ -68,18 +66,51 @@ addition = Expression.new(:+, Scalar.new(1), Scalar.new(2))
 # multiplication
 multiplication = Expression.new(:*, Variable.new("variable_a"), Scalar.new(2))
 
-# storing output
-storing_output = Expression.new(:+, Scalar.new(1), Scalar.new(2), output: "one_plus_two")
-
 environment = Environment.new(
   "variable_a" => 2
 )
 environment.evaluate(addition) #=> 3
 environment.evaluate(multiplication) #=> 4
-environment.evaluate(storing_output) #=> 3
+```
 
-environment.variables
-#=> { "variable_a" => 2, "one_plus_two" => 3 }
+#### Storing `output`
+
+An `Expression` can store its result back into the `Environment` by defining an `output`. Writing the result to the `Environment` is an `Expression`'s way of updating the state.
+
+```ruby
+environment = Environment.new
+storing_output = Expression.new(:+, Scalar.new(1), Scalar.new(2), output: "one_plus_two")
+environment.evaluate(storing_output) #=> 3
+environment.variables #=> { "one_plus_two" => 3 }
+```
+
+Storing output allows us to write composable `Expressions` instead of having to nest `Expressions` when they rely on each other's result. This allows us to do things like parallelize parts of our procedure. For example, consider a set of `Expressions` for solving the gravitational force formula:
+
+$$F_g = \frac{G \cdot m_1 \cdot m_2}{r^2}$$
+
+```ruby
+grav_constant = Scalar.new(BigDecimal(6.7 / 10**11))
+numerator = Expression.new(:*, grav_constant, Variable.new("mass1"), Variable.new("mass2"), output: "numerator")
+denominator = Expression.new(:**, Variable.new("distance"), 2, output: "denominator") # aka "r"
+
+grav_force = Expression.new(:/, Variable.new("numerator"), Variable.new("denominator"))
+```
+
+At this point, we can compute the numerator and denominator independently.
+
+```ruby
+environment = Environment.new(
+  "mass1" => 123.45
+  "mass1" => 54.321
+  "distance" => 67.89
+)
+
+# In parallel...
+environment.evaluate(numerator)
+environment.evaluate(denominator)
+
+# When all components are finished
+environment.evaluate(grav_force)
 ```
 
 #### Special `operators`
@@ -142,7 +173,7 @@ environment.evaluate(Variable.new("variable_a")) # => 2
 
 > [!CAUTION]
 > Ruby `symbols` are converted to `strings` when serialized to JSON, and remain `strings` when that JSON is parsed.
->
+
 ```ruby
 environment = Environment.new(foo: "bar")
 
@@ -152,6 +183,8 @@ environment.evaluate(variable_foo) #=> "bar"
 variable_foo = PortableExpressions.from_json(variable_foo.to_json)
 environment.evaluate(variable_foo) #=> MissingVariableError
 ```
+
+In this example, the same error can be thrown if the `Environment` is serialized and parsed, even if the `Variable` remains unchanged. For this reason, it's recommended to use `strings` for all `Variable` names.
 
 ### Serialization (to JSON)
 

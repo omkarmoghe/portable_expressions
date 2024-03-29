@@ -16,7 +16,7 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Why would I need this?
 
-PortableExpressions can be a powerful tool when designing stateless components. It's useful when you want to transmit the actual _logic_ you want to run (i.e. an `Expression`) along with its inputs.
+PortableExpressions can be a powerful tool when designing stateless components. It's useful when you want to transmit the actual _logic_ you want to run (i.e. an `Expression`) along with its inputs. By making your logic or procedure stateless, you can decouple services from one another in interesting and scalable ways.
 
 Consider a serverless function (e.g. [AWS Lambda](https://aws.amazon.com/lambda/)) that adds 2 inputs together and some application code that calls it:
 
@@ -71,7 +71,7 @@ inputs = PortableExpressions::Environment.new(
 serverless_function_call(:run_expressions, multiply_step.to_json, inputs.to_json) #=> 9
 ```
 
-This is an oversimplified example to illustrate the kind of code you can write when your logic or procedure is **stateless** and **portable**. This paradigm allows you to decouple services from one another in interesting and scalable ways. Here we demonstrated arithmetic, but the `operator` can be any Ruby method that the `operands` respond to, which means your `Expressions` can do a lot more than just add or multiply numbers.
+This is an oversimplified example to illustrate the kind of code you can write when your logic or procedure is **stateless** and **portable**. Here we demonstrated arithmetic, but the `operator` can be any Ruby method that the `operands` respond to, which means your `Expressions` can do a lot more than just add or multiply numbers.
 
 See [example use cases](#example-use-cases) for more ideas.
 

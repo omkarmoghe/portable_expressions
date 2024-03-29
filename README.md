@@ -16,9 +16,64 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Why would I need this?
 
-<!-- TODO -->
+PortableExpressions can be a powerful tool when designing stateless components. It's useful when you want to transmit the actual _logic_ you want to run (i.e. an `Expression`) along with its inputs.
 
-See our [example use cases](#example-use-cases) for more ideas.
+Consider a serverless function (e.g. [AWS Lambda](https://aws.amazon.com/lambda/)) that adds 2 inputs together and some application code that calls it:
+
+```ruby
+# Serverless function
+def add(input1, input2)
+  input1 + input2
+end
+
+# Application code
+serverless_function_call(:add, 1, 2) #=> 3
+```
+
+So far so good, but what if you want to multiply my inputs instead? Well, you could define another function:
+
+```ruby
+def multiply(input1, input2)
+  input1 * input2
+end
+```
+
+But what happens as complexity increases, e.g. you want to run more steps? You could continue to define functions, but it would be a lot simpler if there was a way to tell the function what steps to run, the same way you pass it the inputs. That's where PortableExpressions come in handy:
+
+```ruby
+# Serverless function
+def run_expression(expression_json, environment_json)
+  # This is your logic, or steps:
+  expression = PortableExpressions.from_json(expression_json)
+  # These are your inputs:
+  environment = PortableExpressions.from_json(environment_json)
+  # This is your output:
+  environment.evaluate(expression)
+end
+
+# Application code
+add_step = PortableExpressions::Expression.new(
+  :+,
+  PortableExpressions::Variable.new("input1"),
+  PortableExpressions::Variable.new("input2")
+)
+multiply_step = PortableExpressions::Expression.new(
+  :*,
+  add_step,
+  PortableExpressions::Variable.new("input3")
+)
+inputs = PortableExpressions::Environment.new(
+  "input1" => 1,
+  "input2" => 2,
+  "input3" => 3
+)
+
+serverless_function_call(:run_expressions, multiply_step.to_json, inputs.to_json) #=> 9
+```
+
+This is an oversimplified example to illustrate the kind of code you can write when your logic or procedure is **stateless** and **portable**. This paradigm allows you to decouple services from one another in interesting and scalable ways. Here we demonstrated arithmetic, but the `operator` can be any Ruby method that the `operands` respond to, which means your `Expressions` can do a lot more than just add or multiply numbers.
+
+See [example use cases](#example-use-cases) for more ideas.
 
 ## Usage
 

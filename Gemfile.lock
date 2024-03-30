@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    portable_expressions (0.1.0)
+    portable_expressions (0.1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -40,8 +40,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  portable_expressions!
   minitest (~> 5.16)
+  portable_expressions!
   rake (~> 13.0)
   rubocop (~> 1.21)
 

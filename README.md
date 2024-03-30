@@ -30,7 +30,7 @@ end
 serverless_function_call(:add, 1, 2) #=> 3
 ```
 
-So far so good, but what if you want to multiply my inputs instead? Well, you could define another function:
+So far so good, but what if you want to multiply the inputs instead? Well, you could define another function:
 
 ```ruby
 def multiply(input1, input2)
@@ -38,17 +38,14 @@ def multiply(input1, input2)
 end
 ```
 
-But what happens as complexity increases, e.g. you want to run more steps? You could continue to define specific functions, but it would be a lot simpler if there was a way to tell the function what steps to run, the same way you tell it what the inputs are. Let's rewrite our function using `PortableExpressions`.
+But what happens as complexity increases, e.g. you want to run more steps? You could continue to define specific functions, but it would be a lot simpler if there was a way to tell the function what steps to run, the same way you tell it what the inputs are. Let's rewrite our function using `PortableExpressions`:
 
 ```ruby
 # Serverless function
 def run_expression(expression_json, environment_json)
-  # This is your logic, or steps:
-  expression = PortableExpressions.from_json(expression_json)
-  # These are your inputs:
-  environment = PortableExpressions.from_json(environment_json)
-  # This is your output:
-  environment.evaluate(expression)
+  expression = PortableExpressions.from_json(expression_json) # This is your logic, or steps.
+  environment = PortableExpressions.from_json(environment_json) # These are your inputs.
+  environment.evaluate(expression) # This is your output!
 end
 
 # Application code
@@ -73,7 +70,7 @@ serverless_function_call(:run_expressions, multiply_step.to_json, inputs.to_json
 
 This is an oversimplified example to illustrate the kind of code you can write when your logic or procedure is **stateless** and **portable**. In your application, the inputs and procedure may come from different sources.
 
-We demonstrated arithmetic in our example, but the `operator` can be _any Ruby method_ that the `operands` respond to, which means your `Expressions` can do a lot more than just add or multiply numbers.
+We demonstrated arithmetic here, but the `operator` can be _any Ruby method_ that the `operands` respond to, which means your `Expressions` can do a lot more than just add or multiply numbers.
 
 See [example use cases](#example-use-cases) for more ideas.
 

@@ -8,11 +8,11 @@ A simple and flexible pure Ruby library for building and evaluating expressions.
 
 Install the gem and add to the application's Gemfile by executing:
 
-  `bundle add portable_expressions`
+`bundle add portable_expressions`
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
-  `gem install portable_expressions`
+`gem install portable_expressions`
 
 ## Why would I need this?
 
@@ -65,10 +65,10 @@ inputs = PortableExpressions::Environment.new(
   "input3" => 3
 )
 
-serverless_function_call(:run_expressions, multiply_step.to_json, inputs.to_json) #=> 9
+serverless_function_call(:run_expression, multiply_step.to_json, inputs.to_json) #=> 9
 ```
 
-This is an oversimplified example to illustrate the kind of code you can write when your logic or procedure is **stateless** and **portable**. In your application, the inputs and procedure may come from different sources.
+This is an oversimplified example to illustrate the kind of code you can write when your logic or procedure is **stateless** and **serializable**. In your application, the inputs and procedure may come from different sources.
 
 We demonstrated arithmetic here, but the `operator` can be _any Ruby method_ that the `operands` respond to, which means your `Expressions` can do a lot more than just add or multiply numbers.
 
@@ -347,7 +347,7 @@ user_owns_resource_and_has_permission = Expression.new(:and, user_owns_resource,
 File.write("user_owns_resource_and_has_permission.json", user_owns_resource_and_has_permission.to_json)
 ```
 
-Or we might define a policy the relies on the `output` of other policies. This means that the `Environment` must run the dependencies first in order for their `output` to be available in the `Environment#variables`.
+Or we might define a policy the relies on the `output` of other policies. The `Environment` must `evaluate` the dependencies first in order for their `output` to be available for the following `Expressions`.
 
 ```ruby
 user_owns_resource_and_has_permission = Expression.new(

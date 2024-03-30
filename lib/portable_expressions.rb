@@ -6,7 +6,7 @@ require "json"
 
 require_relative "portable_expressions/version"
 require_relative "portable_expressions/modules/serializable"
-require_relative "portable_expressions/evaluator"
+require_relative "portable_expressions/operand"
 require_relative "portable_expressions/scalar"
 require_relative "portable_expressions/variable"
 require_relative "portable_expressions/expression"

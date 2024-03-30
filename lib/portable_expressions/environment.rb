@@ -35,7 +35,7 @@ module PortableExpressions
         end
       when Expression
         value = object.operands
-                      .map { |operand| Evaluator.new(evaluate(operand)) }
+                      .map { |operand| Operand.new(evaluate(operand)) }
                       .reduce(object.operator)
 
         variables[object.output] = value if object.output

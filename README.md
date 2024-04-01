@@ -107,7 +107,7 @@ environment.evaluate(variable_b) #=> MissingVariableError
 
 ### Expression
 
-An expression represents 2 or more `operands` that are reduced using a defined `operator`. The `operands` of an `Expression` can be `Scalars`, `Variables`, or other `Expressions`. All `operands` must respond to the symbol (i.e. support the method) defined by the `Expression#operator`. Just like `Variables`, `Expressions` have non value until they're evaluated by an `Environment`.
+An expression represents 2 or more `operands` that are reduced using a defined `operator`. The `operands` of an `Expression` can be `Scalars`, `Variables`, or other `Expressions`. All `operands` must respond to the symbol (i.e. support the method) defined by the `Expression#operator`. Just like `Variables`, `Expressions` have no value until they're evaluated by an `Environment`.
 
 Evaluating an `Expression` does the following:
 1. all `operands` are first evaluated in order

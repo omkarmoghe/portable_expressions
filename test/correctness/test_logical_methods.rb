@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TestLogicalMethods < Minitest::Test
   def setup
     @env = PortableExpressions::Environment.new(
